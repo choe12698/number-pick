@@ -1,0 +1,227 @@
+<!DOCTYPE html> 
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>넘버픽</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: white;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 40px;
+    font-size: 48px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px #00f2ff;
+}
+
+button {
+    margin-top: 30px;
+    padding: 15px 40px;
+    font-size: 20px;
+    border: none;
+    border-radius: 50px;
+    background: #00f2ff;
+    color: black;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: white;
+    box-shadow: 0 0 20px #00f2ff;
+}
+
+#result {
+    margin-top: 40px;
+    font-size: 80px;
+    font-weight: bold;
+    text-shadow: 0 0 20px #00f2ff;
+}
+
+a {
+    display: block;
+    margin-top: 20px;
+    font-size: 20px;
+    color: #00f2ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+</style>
+</head>
+<body>
+
+<h1>NUMBER PICK</h1>
+
+<button onclick="drawNumber()">번호 뽑기</button>
+
+<div id="result">?</div>
+<a id="link" target="_blank"></a>
+
+<script>
+
+// ===== 네 링크 137개 넣는 곳 =====
+const links = [
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76733",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76734",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76736",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76737",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76738",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76739",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76740",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76741",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76742",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76743",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76744",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76745",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76746",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76747",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76748",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76749",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76750",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76751",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76752",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76753",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76757",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76758",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76761",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76762",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76763",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76764",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76766",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76767",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76769",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76770",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76772",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76773",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76774",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76775",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76777",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76778",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76782",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76784",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76787",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76793",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76795",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76796",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76804",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76808",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76825",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76832",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76863",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76872",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76875",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76914",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76938",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/76966",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77001",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77013",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77015",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77016",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77028",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77030",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77031",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77032",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77033",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77034",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77035",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77036",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77038",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77039",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77040",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77041",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77042",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77043",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77044",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77045",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77046",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77047",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77048",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77049",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77052",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77053",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77054",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77056",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77057",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77058",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77059",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77061",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77062",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77063",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77064",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77065",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77067",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77068",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77069",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77070",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77071",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77072",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77073",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77075",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77077",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77078",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77082",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77093",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77100",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77102",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77113",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77115",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77116",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77118",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77120",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77123",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77126",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77144",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77145",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77146",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77150",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77153",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77155",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77156",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77159",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77162",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77176",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77178",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77204",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77215",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77224",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77235",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77258",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77260",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77318",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77331",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77346",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77348",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77349",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77352",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77375",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77377",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77398",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77413",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77462",
+"https://cafe.naver.com/f-e/cafes/31113424/articles/77464"
+];
+
+function drawNumber() {
+
+    const number = Math.floor(Math.random() * links.length);
+
+    // 랜덤 번호 표시
+    document.getElementById("result").innerText = number + 1;
+
+    // 링크 연결
+    document.getElementById("link").innerText = "게시글 보러가기";
+    document.getElementById("link").href = links[number];
+}
+
+</script>
+
+</body>
+</html>
